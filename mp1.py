@@ -106,12 +106,24 @@ with open(fileName, 'w') as log: #open the file
 	output_file = path + '/predicted_functionality.csv'
 	makedb = 'makeblastdb -in ' + db_file  + '-out ' + path + '/Ecoli -title ' + path + '/Ecoli -dbtype prot'
 	db_path = path + '/Ecoli'
-	os.system(makedb)
+	#os.system(makedb)
 	blast_command='blastp -query '+ query_file + ' -db ' + db_path + ' -max_target_seqs 1 -out ' + output_file + ' -outfmt ' + outfmt 
-	print(blast_command)
-	os.system(blast_command)
-	'''
+	#os.system(blast_command)
+	#blast the contigs file from genemark output against the Ecoli database and output to predicted_functionality.csv file in results folder
+
+###PROBLEM 7###	
 	with open(output_file, 'r') as blast:
-		blast_comps = blast.readlines() #blast comparisons
-		print(len(blast_comps))
-	'''
+		blast_cds = blast.readlines() #blast comparisons
+		num_cds = len(blast_cds)
+	
+	refseq_Ecoli_cds = 4140
+	discrepancy = 0
+	if num_cds > refseq_Ecoli_cds:
+		discrepancy = num_cds - refseq_Ecoli_cds
+		log.write('GeneMarkS found ' + str(discrepancy) + ' additional CDS than the RefSeq.\n')
+	elif num_cds < refseq_Ecoli_cds:
+		discrepancy = refseq_Ecoli_cds - num_cds
+		log.write('RefSeq found ' + str(discrepancy) + ' additional CDS than GeneMarkS.\n')
+	else:
+		log.write('GeneMarkS found the same number of CDS (' + refseq_E.coli.cds + ') as RefSeq.\n')
+	

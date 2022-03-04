@@ -1,12 +1,15 @@
 # Comp383MiniProject
 The miniproject is a python wrapper using a combination of SPAdes, GeneMark, and Blast.
 
+GOAL: The goal of the project was to look at the strain of K-12 E. coli and determine whether the strain had mutated and developed new genes by comparing the refseq number of genes and the genemark amount of coding sequences identified.
+
 CODE EXPLANATION:
 This code takes in an SRA number (format is SRR#), grabs the .sra file using the prefetch command in SRA tools, and then generates the .fastq file using the faster-q command. Then, the fastq file has the genome assebled using spades to creae a contigs.fasta file in SR#####_assembly directory. The file is then read in and sorted for all contigs over length of 1000 bases. Those contigs are then wrote out to a separate .fasta file. The .fasta file is then fed into genemark to determine the genes of the contigs that code for amino acid sequences, and writes that out to the predicted_cds.txt file. An ecoli database is then generated using an ecoli databise file from ncbi. Blast is then used to compare the predicted amino acid sequences in prerdicted_cds.txt and provides the top gene hit for each of the sequences and outputs to the file predicted_functionality.csv. Each line is for each of the predicted genes present in the assembled genome. Then, the number of predicted genes is compared against the number of genes present in the RefSeq genome to determine if RefSeq or GeneMarkS2 found more genes.
 
 HOW THE CODE WAS TESTED:
-The code was tested using the SRA number: SRR8185310.
-The Ecoli dataset used a multifasta file of genes from Ecoli from Prokka.
+The code was tested using the SRA number: SRR8185310 for the E. coli strain K-12
+
+The Ecoli dataset used a multifasta file of genes from Ecoli from Prokka, which is located in the github directory under Ecoli.fasta.
 
 
 PACKAGE DOCUMENTATION:

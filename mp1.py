@@ -108,7 +108,7 @@ with open(fileName, 'w') as log: #open the file
 	db_path = path + '/Ecoli' #db path for blast command
 	#os.system(makedb) #make db call
 	blast_command='blastp -query '+ query_file + ' -db ' + db_path + ' -max_target_seqs 1 -out ' + output_file + ' -outfmt ' + outfmt 
-	#os.system(blast_command) #blast command and call
+	os.system(blast_command) #blast command and call
 	#blast the contigs file from genemark output against the Ecoli database and output to predicted_functionality.csv file in results folder
 
 ###PROBLEM 7###	

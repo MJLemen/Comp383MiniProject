@@ -1,0 +1,4 @@
+python3 SPAdes-3.15.4-Linux/bin/spades.py  -t 2 -s /home/mlemenager/results/SRR8185310.fastq -o /home/mlemenager/results/SRR8185310_assembly/
+There are 108 contigs > 1000 in the assembly.
+There are 4542620 bp in the assembly.
+GeneMarkS found 116 additional CDS than the RefSeq.

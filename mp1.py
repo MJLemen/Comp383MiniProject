@@ -1,9 +1,9 @@
 #this is the miniproject code
 
 ###PROBLEM 1###
-'Retrieve the Illumina reads for the resequencing of K-12 project: https://www.ncbi.nlm.nih.gov/sra/SRX5005282. These are single-end Illumina reads. Your code will retrieve this file; i.e., you cannot just retrieve it.'
 
 import os
+#import os to write commands to prompt line
 
 parent_path = os.getcwd() #get the home directory
 directory = 'results' #create the filename to write out to
@@ -36,27 +36,28 @@ def read_fasta(fileName): #read in fasta file
 with open(fileName, 'w') as log: #open the file
 
 	sra_Number = 'SRR8185310' #the number information that is downloaded
-	'''
+	
 	prefetch = 'sratoolkit.2.11.2-ubuntu64/bin/prefetch ' + sra_Number
 	#create the prefetch command
-	os.system(prefetch) #call on shell to run the prefetch command#will download file to /home/mlemenager/sra-output/sra/SRR8185310.sra
+	os.system(prefetch) #call on shell to run the prefetch command#will download file to the /sra_output/sra directory in the results folder
 
-	sra_file = "sra-output/sra/SRR8185310.sra"
-	print("Generating fastq for: " + sra_Number)
-	fastq_dump = "sratoolkit.2.11.2-ubuntu64/bin/fasterq-dump " + sra_file
+	sra_file = "results/sra_output/sra/" + sra_Number + ".sra"
+	#give the path the the .sra file
+		
+	fastq_dump = "sratoolkit.2.11.2-ubuntu64/bin/fasterq-dump " + sra_file + ' -o ' + path + '/' + sra_Number + '.fastq'
 	os.system(fastq_dump)
-	#generate the fastq file above
-	'''
+	#generate the fastq file above using the sra file in the results folder
+	
 
 ###PROBLEM 2###
-	'''
 	
-	spades_command = 'python3 SPAdes-3.15.4-Linux/bin/spades.py  -t 2 -s ' + sra_Number + '.fastq -o ' + path  + '/' + sra_Number +'_assembly/' 
+	
+	spades_command = 'python3 SPAdes-3.15.4-Linux/bin/spades.py  -t 2 -s ' + path +'/'+ sra_Number + '.fastq -o ' + path  + '/' + sra_Number +'_assembly/' 
 	#the spades command, -t for two bytes, -s for single reads, -o for specified output directory
 
 	log.write(spades_command+ '\n') #write out command to log file
 	os.system(spades_command) #execute command in terminal
-	'''
+	
 ###PROBLEM 3###
 	sra_assembly_path = path +'/'+sra_Number+'_assembly/' #the sra_assembly path
 	fasta_dict = read_fasta(sra_assembly_path+'contigs.fasta') #find the contigs file and read the fasta file
@@ -80,17 +81,18 @@ with open(fileName, 'w') as log: #open the file
 	contig_path = path + '/1000_contigs.fasta' #make file path variable
 	
 	log.write('There are ' + str(contigsAbove1000) + ' contigs > 1000 in the assembly.\n')
-
+	#write out to log file amount of contigs above 1000
 ###Problem 4###
 	log.write('There are ' + str(total_bp_contigs_over_1000) + ' bp in the assembly.\n')
-
+	#write out to log file total bp for all contigs over 1000 bps
 ###Problem 5###
 	predicted_cds_file = path + '/predicted_cds.txt'
-	'''
+	#create a file path variable for the predicted_cds.txt file
+
 	genemark = 'perl '+ parent_path + '/gms2_linux_64/gms2.pl --seq '+ contig_path + ' --genome-type bacteria --format gff --output ' + path + '/genemarkS2.txt --faa ' + predicted_cds_file
-	
+	#genemarks2 command
+
 	os.system(genemark)
-	'''
 	#write the command to the prompt
 	#write results to results folder in the home directory
 	#first writes out the seqeunces in nucl. form to genemarkS2.txt
@@ -124,5 +126,5 @@ with open(fileName, 'w') as log: #open the file
 		discrepancy = refseq_Ecoli_cds - num_cds
 		log.write('RefSeq found ' + str(discrepancy) + ' additional CDS than GeneMarkS.\n')
 	else:
-		log.write('GeneMarkS found the same number of CDS (' + refseq_E.coli.cds + ') as RefSeq.\n')
+		log.write('GeneMarkS found the same number of CDS (' + refseq_Ecoli_cds + ') as RefSeq.\n')
 	
